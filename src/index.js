@@ -1,13 +1,7 @@
-import React from 'react';
+import React,{useState} from 'react';
 import ReactDOM from 'react-dom';
 import './style.css';
-import { finished } from 'stream';
 
-const cells = [
-    [null,null,null],
-    [null,null,null],
-    [null,null,null],
-]
 const Cell = function (props){
     return(
         <div className="cell">
@@ -15,25 +9,59 @@ const Cell = function (props){
         </div>
     )
 }
-const [n, setN] = useState(0)
-const tell = (cells) => {
-    if(cells[0][0] === cells[0][1] && cells[0][1] === cells[0][2]
-        && cells[0][0] !== null){
-            console.log(cells[0][0] + '赢')
-            setFinished(true)
-        }
-}
-const onClickCell = (row,col) => {
-    // n + 1
-    setN(n + 1)
-    // 改变 cells
-    const copy = JSON.parse(JSON.stringify(cells))
-    copy[row][col] = n % 2 === 0 ? 'X' : 'O'
-    setCells(copy)
-    // 判断输赢
-    tell(classProperty)
-}
+
 const Chessboard = function(){
+    const [cells, setCells] = useState([
+        [null,null,null],
+        [null,null,null],
+        [null,null,null],
+    ])
+    const [finished, setFinished] = useState(false)
+    const [n, setN] = useState(0)
+    const tell = (cells) => {
+        for(let i = 0; i < 3; i++){
+            if(cells[i][0] === cells[i][1] && cells[i][1] === cells[i][2]
+                && cells[i][0] !== null){
+                    console.log(cells[i][0] + '赢')
+                    setFinished(true)
+                    break;
+                }
+            }
+        for(let i = 0;i<3; i++){
+            if(cells[0][i] === cells[1][i] && cells[1][i] === cells[2][i]
+                && cells[0][i] !== null){
+                    console.log(cells[0][i] + '赢')
+                    setFinished(true)
+                    break;
+                }
+        }
+        if(
+            cells[0][0] === cells[1][1] && 
+            cells[1][1] === cells[2][2] && 
+            cells[0][0] !== null 
+        ){
+            console.log(cells[0][0] + '赢')
+                    setFinished(true)
+        }
+        if(
+            cells[0][2] === cells[1][1] && 
+            cells[1][1] === cells[2][0] && 
+            cells[1][1] !== null 
+        ){
+            console.log(cells[1][1] + '赢')
+                    setFinished(true)
+        }
+        }
+    const onClickCell = (row,col) => {
+        // n + 1
+        setN(n + 1)
+        // 改变 cells
+        const copy = JSON.parse(JSON.stringify(cells))
+        copy[row][col] = n % 2 === 0 ? 'X' : 'O'
+        setCells(copy)
+        // 判断输赢
+        tell(copy)
+    }
     return (
         <div>
             <div>n:{n}</div>
@@ -47,4 +75,4 @@ const Chessboard = function(){
     )
 }
 
-ReactDOM.render(<Chessboard />, document.getElementById('root'));
+ReactDOM.render(<div><Chessboard /></div>, document.getElementById('root'));
