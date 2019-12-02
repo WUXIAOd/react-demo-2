@@ -1,10 +1,10 @@
-import React,{useState} from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import './style.css';
 
 const Cell = function (props){
     return(
-        <div className="cell">
+        <div className="cell" onClick={props.onClick}>
             {props.text}
         </div>
     )
@@ -52,7 +52,8 @@ const Chessboard = function(){
                     setFinished(true)
         }
         }
-    const onClickCell = (row,col) => {
+    const onClickCell = (row, col) => {
+        console.log(1)
         // n + 1
         setN(n + 1)
         // 改变 cells
@@ -64,10 +65,9 @@ const Chessboard = function(){
     }
     return (
         <div>
-            <div>n:{n}</div>
             {cells.map((items,row) =><div className="row">
                 {items.map((item, col) =><div className="col">
-                    <Cell text={item} onClick={() => onClickCell(row,col)}/>
+                    <Cell text={item} onClick={() => onClickCell(row,col)} />
                 </div>)}
              </div>)}
             {finished && <div className="gameOver">游戏结束</div>}
@@ -75,4 +75,6 @@ const Chessboard = function(){
     )
 }
 
-ReactDOM.render(<div><Chessboard /></div>, document.getElementById('root'));
+ReactDOM.render(<div>
+    <Chessboard />
+</div>, document.getElementById('root'))
